@@ -24,6 +24,8 @@ def main() -> None:
         raise ValueError("entry line must not start or end with whitespace")
     if "\n" in line or "\r" in line:
         raise ValueError("entry must be a single line")
+    if any(ord(ch) < 0x20 for ch in line):
+        raise ValueError("entry must not contain control characters")
     target = Path(os.environ.get("ENTRY_OUTPUT", "/output/entry.txt"))
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(line, encoding="utf-8")
